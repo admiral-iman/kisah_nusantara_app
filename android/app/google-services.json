@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1080448815688",
+    "project_id": "kisahnusantaraapp",
+    "storage_bucket": "kisahnusantaraapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1080448815688:android:4f6269fb1e49bc212bbe7d",
+        "android_client_info": {
+          "package_name": "com.example.kisah_nusantara_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmM0rujT4QefZmm9X-PkYQflpbE-vkGhw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
