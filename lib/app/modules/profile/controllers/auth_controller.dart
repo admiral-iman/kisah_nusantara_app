@@ -1,12 +1,24 @@
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends GetxController {
   var isLoading = false.obs;
   var user = Rx<User?>(null);
   var userName = ''.obs; // Untuk menyimpan nama pengguna
   var userBirthday = ''.obs; // Untuk menyimpan tanggal lahir pengguna
+
+  Future<void> saveLoginStatus(bool isLoggedIn) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isLoggedIn', isLoggedIn);
+  }
+
+  // Fungsi untuk memeriksa status login
+  Future<bool> checkLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isLoggedIn') ?? false;
+  }
 
   // Login function
   Future<void> login(String email, String password) async {
@@ -21,6 +33,9 @@ class AuthController extends GetxController {
 
       // Ambil data pengguna dari Firestore
       await _getUserData(user.value!.uid);
+
+      // Simpan status login
+      await saveLoginStatus(true);
 
       Get.offAllNamed('/home'); // Redirect ke halaman home
     } catch (e) {
@@ -55,6 +70,9 @@ class AuthController extends GetxController {
       userName.value = name;
       userBirthday.value = birthday;
 
+      // Simpan status login
+      await saveLoginStatus(true);
+
       Get.offAllNamed('/home');
     } catch (e) {
       Get.snackbar('Register Error', e.toString(),
@@ -70,6 +88,10 @@ class AuthController extends GetxController {
     user.value = null;
     userName.value = '';
     userBirthday.value = '';
+
+    // Set status login menjadi false
+    await saveLoginStatus(false);
+
     Get.offAllNamed('/login');
   }
 

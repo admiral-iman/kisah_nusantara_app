@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kisah_nusantara_app/app/modules/profile/controllers/auth_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatelessWidget {
   final AuthController authController = Get.put(AuthController());
@@ -10,6 +11,8 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _checkLoginStatus(); // Pengecekan status login
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -32,8 +35,8 @@ class LoginPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image.asset(
-                  'assets/logo.png', // Pastikan logo berada di folder assets
-                  height: 100, // Sesuaikan ukuran logo
+                  'assets/logo.png',
+                  height: 100,
                   fit: BoxFit.contain,
                 ),
                 SizedBox(height: 20),
@@ -79,7 +82,7 @@ class LoginPage extends StatelessWidget {
                 SizedBox(height: 20),
                 TextButton(
                   onPressed: () {
-                    Get.toNamed('/register'); // Navigasi ke halaman Register
+                    Get.toNamed('/register');
                   },
                   child: Text(
                     "Don't have an account? Register here",
@@ -92,6 +95,17 @@ class LoginPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // Pengecekan status login dari SharedPreferences
+  Future<void> _checkLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+
+    if (isLoggedIn) {
+      // Jika sudah login, langsung arahkan ke halaman home
+      Get.offAllNamed('/home');
+    }
   }
 
   // Custom widget untuk TextField
