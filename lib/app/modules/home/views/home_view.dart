@@ -5,6 +5,8 @@ import 'package:kisah_nusantara_app/app/modules/course/budaya/views/budaya_page.
 import 'package:kisah_nusantara_app/app/modules/course/sejarah/views/sejarah_page.dart';
 
 import '../../profile/controllers/auth_controller.dart';
+import '../../profile/views/profile_view.dart';
+import 'bottom_navbar.dart';
 
 class HomeView extends StatelessWidget {
   final AuthController authController = Get.find<AuthController>();
@@ -220,25 +222,7 @@ class HomeView extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        selectedItemColor: Color(0xFF153448),
-        unselectedItemColor: Colors.grey,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Beranda',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.library_books),
-            label: 'Kursus',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profil',
-          ),
-        ],
-      ),
+      bottomNavigationBar: BottomNavBar(currentIndex: 0),
     );
   }
 

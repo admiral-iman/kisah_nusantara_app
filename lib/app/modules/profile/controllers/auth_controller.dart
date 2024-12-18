@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,6 +10,7 @@ class AuthController extends GetxController {
   var user = Rx<User?>(null);
   var userName = ''.obs; // Untuk menyimpan nama pengguna
   var userBirthday = ''.obs; // Untuk menyimpan tanggal lahir pengguna
+  var userEmail = ''.obs;
 
   Future<void> saveLoginStatus(bool isLoggedIn) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -69,6 +72,7 @@ class AuthController extends GetxController {
 
       userName.value = name;
       userBirthday.value = birthday;
+      userEmail.value = email;
 
       // Simpan status login
       await saveLoginStatus(true);
@@ -103,10 +107,49 @@ class AuthController extends GetxController {
       if (userDoc.exists) {
         userName.value = userDoc['name'];
         userBirthday.value = userDoc['birthday'];
+        userEmail.value = userDoc['email'];
       }
     } catch (e) {
       Get.snackbar('Error', 'Gagal mengambil data pengguna',
           snackPosition: SnackPosition.BOTTOM);
+    }
+  }
+
+  // Fungsi untuk mengedit profil pengguna
+  Future<void> editProfile({
+    String? name,
+    String? password,
+    String? birthday,
+  }) async {
+    isLoading(true);
+    try {
+      if (name != null && name.isNotEmpty) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.value!.uid)
+            .update({'name': name});
+        userName.value = name;
+      }
+
+      if (birthday != null && birthday.isNotEmpty) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.value!.uid)
+            .update({'birthday': birthday});
+        userBirthday.value = birthday;
+      }
+
+      if (password != null && password.isNotEmpty) {
+        await user.value!.updatePassword(password);
+      }
+
+      Get.snackbar('Success', 'Profil berhasil diperbarui',
+          snackPosition: SnackPosition.BOTTOM);
+    } catch (e) {
+      Get.snackbar('Error', 'Gagal memperbarui profil: $e',
+          snackPosition: SnackPosition.BOTTOM);
+    } finally {
+      isLoading(false);
     }
   }
 }
