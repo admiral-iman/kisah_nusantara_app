@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kisah_nusantara_app/app/modules/profile/views/my_account.dart';
 import '../../home/views/bottom_navbar.dart';
 import '../controllers/auth_controller.dart';
 import 'account_settings_page.dart';
@@ -76,7 +77,9 @@ class ProfilePage extends StatelessWidget {
               _buildMenuItem(
                 icon: Icons.person_outline,
                 title: "Informasi Pribadi",
-                onTap: () {},
+                onTap: () {
+                  Get.to(() => MyAccount());
+                },
               ),
               _buildMenuItem(
                 icon: Icons.settings_outlined,
@@ -120,6 +123,12 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
+              const Divider(
+                color: Colors.grey, // Line color
+                thickness: 1, // Line thickness
+                indent: 20, // Indentation from left
+                endIndent: 20, // Indentation from right
+              ),
               // Logout Button
               ListTile(
                 leading: const Icon(Icons.logout, size: 30, color: Colors.red),
