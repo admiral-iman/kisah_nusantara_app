@@ -6,10 +6,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthController extends GetxController {
   var isLoading = false.obs;
   var user = Rx<User?>(null);
-  var userName = ''.obs; // Untuk menyimpan nama pengguna
-  var userBirthday = ''.obs; // Untuk menyimpan tanggal lahir pengguna
+  var userName = ''.obs;
+  var userBirthday = ''.obs;
   var userEmail = ''.obs;
+  var isAdmin = false.obs; // Menyimpan status apakah user admin atau bukan
 
+  // Menyimpan status login ke SharedPreferences
   Future<void> saveLoginStatus(bool isLoggedIn) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('isLoggedIn', isLoggedIn);
@@ -21,10 +23,25 @@ class AuthController extends GetxController {
     return prefs.getBool('isLoggedIn') ?? false;
   }
 
-  // Login function
+  // Fungsi login
   Future<void> login(String email, String password) async {
     isLoading(true);
     try {
+      // Pemeriksaan login untuk admin
+      if (email == 'admin@gmail.com' && password == 'admin123') {
+        user.value = FirebaseAuth.instance.currentUser;
+        userName.value = 'Admin';
+        userEmail.value = email;
+        isAdmin.value = true; // Set isAdmin ke true untuk admin hardcoded
+
+        // Simpan status login
+        await saveLoginStatus(true);
+
+        Get.offAllNamed('/admin_home'); // Redirect ke halaman admin
+        return;
+      }
+
+      // Login biasa dengan email dan password
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
@@ -47,6 +64,28 @@ class AuthController extends GetxController {
     }
   }
 
+  // Fungsi untuk mengambil data pengguna dari Firestore
+  Future<void> _getUserData(String uid) async {
+    try {
+      DocumentSnapshot userDoc =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      if (userDoc.exists) {
+        userName.value = userDoc['name'];
+        userBirthday.value = userDoc['birthday'];
+        userEmail.value = userDoc['email'];
+
+        // Menyimpan status admin dari Firestore
+        isAdmin.value = userDoc['isAdmin'] ?? false; // Set ke true jika admin
+        print('Data Firestore: ${userDoc.data()}');
+        print('Is Admin from Firestore: ${isAdmin.value}');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Gagal mengambil data pengguna',
+          snackPosition: SnackPosition.BOTTOM);
+    }
+  }
+
+  // Fungsi untuk register
   Future<void> register(
       String name, String email, String password, String birthday) async {
     isLoading(true);
@@ -66,6 +105,7 @@ class AuthController extends GetxController {
         'name': name,
         'email': email,
         'birthday': birthday,
+        'isAdmin': false, // Set isAdmin ke false untuk user biasa
       });
 
       userName.value = name;
@@ -84,33 +124,18 @@ class AuthController extends GetxController {
     }
   }
 
-  // Logout function
+  // Fungsi logout
   Future<void> logout() async {
     await FirebaseAuth.instance.signOut();
     user.value = null;
     userName.value = '';
     userBirthday.value = '';
+    isAdmin.value = false;
 
     // Set status login menjadi false
     await saveLoginStatus(false);
 
     Get.offAllNamed('/login');
-  }
-
-  // Fungsi untuk mengambil data pengguna dari Firestore
-  Future<void> _getUserData(String uid) async {
-    try {
-      DocumentSnapshot userDoc =
-          await FirebaseFirestore.instance.collection('users').doc(uid).get();
-      if (userDoc.exists) {
-        userName.value = userDoc['name'];
-        userBirthday.value = userDoc['birthday'];
-        userEmail.value = userDoc['email'];
-      }
-    } catch (e) {
-      Get.snackbar('Error', 'Gagal mengambil data pengguna',
-          snackPosition: SnackPosition.BOTTOM);
-    }
   }
 
   // Fungsi untuk mengedit profil pengguna

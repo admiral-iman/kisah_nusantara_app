@@ -21,7 +21,7 @@ class BottomNavBar extends StatelessWidget {
         if (index == 0) {
           Get.to(() => HomeView()); // Navigasi ke Home
         } else if (index == 1) {
-          Get.to(() => CreateCourseView()); // Navigasi ke My Course
+          Get.to(() => MyCoursePage()); // Navigasi ke My Course
         } else if (index == 2) {
           Get.to(() => ProfilePage()); // Navigasi ke Profile
         }

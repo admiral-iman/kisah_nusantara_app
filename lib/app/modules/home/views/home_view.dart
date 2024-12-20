@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:kisah_nusantara_app/app/modules/course/bahasa/views/bahasa_page.dart';
 import 'package:kisah_nusantara_app/app/modules/course/budaya/views/budaya_page.dart';
 import 'package:kisah_nusantara_app/app/modules/course/sejarah/views/sejarah_page.dart';
+import 'package:kisah_nusantara_app/app/modules/createcourse/views/create_course_view.dart';
 
 import '../../profile/controllers/auth_controller.dart';
 import '../../profile/views/profile_view.dart';
@@ -10,6 +11,7 @@ import 'bottom_navbar.dart';
 
 class HomeView extends StatelessWidget {
   final AuthController authController = Get.find<AuthController>();
+
   // Widget untuk kartu kursus
   Widget _buildCourseCard(
       String title, String description, Color color, VoidCallback onTap) {
@@ -87,12 +89,37 @@ class HomeView extends StatelessWidget {
                           )),
                     ],
                   ),
-                  CircleAvatar(
-                    child: Icon(Icons.notifications, color: Color(0xFF153448)),
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        child:
+                            Icon(Icons.notifications, color: Color(0xFF153448)),
+                      ),
+                      SizedBox(width: 8),
+                      Obx(() {
+                        // Tampilkan tombol admin jika isAdmin == true
+                        if (authController.isAdmin.value) {
+                          return ElevatedButton(
+                            onPressed: () {
+                              Get.to(() =>
+                                  CreateCourseView()); // Arahkan ke halaman createcourse
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF153448),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: Text('Create Course'),
+                          );
+                        } else {
+                          return SizedBox.shrink(); // Jangan tampilkan apa pun
+                        }
+                      }),
+                    ],
                   ),
                 ],
               ),
-              SizedBox(height: 20),
 
               // Kartu Pengingat
               Container(
