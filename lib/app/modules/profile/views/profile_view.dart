@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kisah_nusantara_app/app/modules/profile/views/my_account.dart';
+import 'package:kisah_nusantara_app/app/modules/profile/views/voucher_view.dart';
 import '../../home/views/bottom_navbar.dart';
 import '../controllers/auth_controller.dart';
 import 'account_settings_page.dart';
+import 'payment_view.dart';
 
 class ProfilePage extends StatelessWidget {
   final AuthController authController = Get.find<AuthController>();
@@ -101,7 +103,9 @@ class ProfilePage extends StatelessWidget {
               _buildMenuItem(
                 icon: Icons.payment,
                 title: "Pembayaran",
-                onTap: () {},
+                onTap: () {
+                  Get.to(() => VoucherView());
+                },
               ),
               const SizedBox(height: 20),
               // Upgrade Button
