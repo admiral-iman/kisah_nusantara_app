@@ -15,6 +15,9 @@ class MyCoursePage extends StatelessWidget {
         children: [
           Expanded(
             child: Obx(() {
+              if (controller.courses.isEmpty) {
+                return const Center(child: CircularProgressIndicator());
+              }
               return ListView.builder(
                 itemCount: controller.courses.length,
                 itemBuilder: (context, index) {
@@ -22,6 +25,7 @@ class MyCoursePage extends StatelessWidget {
                   return Card(
                     child: ListTile(
                       title: Text(course['name']),
+                      subtitle: Text(course['description']),
                       trailing: Icon(
                         course['selected']
                             ? Icons.check_circle
@@ -41,7 +45,7 @@ class MyCoursePage extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                'Total kelas dipilih: ${controller.selectedCount.value}',
+                'Total kelas dipilih: ${controller.selectedCount}',
                 style:
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),

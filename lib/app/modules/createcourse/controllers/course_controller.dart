@@ -1,35 +1,52 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CourseController extends GetxController {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  var courses = <Map<String, dynamic>>[].obs;
+  var isLoading = false.obs;
 
   var courseName = ''.obs;
   var courseDescription = ''.obs;
-  var isLoading = false.obs;
 
-  // Function to add course to Firestore
-  Future<void> addCourse() async {
-    if (courseName.isEmpty || courseDescription.isEmpty) {
-      Get.snackbar('Validation Error', 'Name and Description cannot be empty');
-      return;
-    }
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  @override
+  void onInit() {
+    fetchCourses();
+    super.onInit();
+  }
+
+  Future<void> fetchCourses() async {
     isLoading(true);
     try {
-      await _firestore.collection('courses').add({
-        'name': courseName.value,
-        'description': courseDescription.value,
-        'createdAt': DateTime.now(),
-      });
-      // Clear fields after adding
-      courseName.value = '';
-      courseDescription.value = '';
-      Get.snackbar('Success', 'Course created successfully');
+      var result = await firestore.collection('courses').get();
+      courses.value =
+          result.docs.map((doc) => {...doc.data(), 'id': doc.id}).toList();
     } catch (e) {
-      Get.snackbar('Error', 'Failed to create course: $e');
+      Get.snackbar('Error', 'Gagal mengambil data: $e');
     } finally {
       isLoading(false);
     }
+  }
+
+  Future<void> addCourse() async {
+    await firestore.collection('courses').add({
+      'name': courseName.value,
+      'description': courseDescription.value,
+    });
+    fetchCourses();
+  }
+
+  Future<void> updateCourse(String id) async {
+    await firestore.collection('courses').doc(id).update({
+      'name': courseName.value,
+      'description': courseDescription.value,
+    });
+    fetchCourses();
+  }
+
+  Future<void> deleteCourse(String id) async {
+    await firestore.collection('courses').doc(id).delete();
+    fetchCourses();
   }
 }

@@ -5,7 +5,7 @@ import 'package:kisah_nusantara_app/app/modules/profile/views/voucher_view.dart'
 import '../../home/views/bottom_navbar.dart';
 import '../controllers/auth_controller.dart';
 import 'account_settings_page.dart';
-import 'payment_view.dart';
+//import 'payment_view.dart';
 
 class ProfilePage extends StatelessWidget {
   final AuthController authController = Get.find<AuthController>();
@@ -15,7 +15,8 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFDFD0B8), // Background color for the whole screen
+      backgroundColor:
+          Color(0xFFDFD0B8), // Background color for the whole screen
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(top: 40), // Padding from top
@@ -27,7 +28,10 @@ class ProfilePage extends StatelessWidget {
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Color(0xFFF2E1C1), Color(0xFFDFD0B8)], // Lighter gradient for a smoother transition
+                    colors: [
+                      Color(0xFFF2E1C1),
+                      Color(0xFFDFD0B8)
+                    ], // Lighter gradient for a smoother transition
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                   ),
@@ -36,7 +40,8 @@ class ProfilePage extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 50,
-                      backgroundImage: AssetImage('assets/profile_placeholder.png'),
+                      backgroundImage:
+                          AssetImage('assets/profile_placeholder.png'),
                     ),
                     const SizedBox(height: 12),
                     Obx(() => Text(

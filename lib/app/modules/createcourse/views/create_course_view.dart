@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/course_controller.dart';
+import 'add_course.dart';
+import 'edit_course.dart';
+import 'course_card.dart';
 
 class CreateCourseView extends StatelessWidget {
   final CourseController controller = Get.put(CourseController());
@@ -9,46 +12,33 @@ class CreateCourseView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create New Course'),
+        title: Text('Daftar Kelas'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Obx(() {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextField(
-                onChanged: (value) {
-                  controller.courseName.value = value;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Course Name',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 16),
-              TextField(
-                onChanged: (value) {
-                  controller.courseDescription.value = value;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Course Description',
-                  border: OutlineInputBorder(),
-                ),
-                maxLines: 4,
-              ),
-              SizedBox(height: 20),
-              controller.isLoading.value
-                  ? Center(child: CircularProgressIndicator())
-                  : ElevatedButton(
-                      onPressed: () {
-                        controller.addCourse();
-                      },
-                      child: Text('Create Course'),
-                    ),
-            ],
-          );
-        }),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return ListView.builder(
+          itemCount: controller.courses.length,
+          itemBuilder: (context, index) {
+            final course = controller.courses[index];
+            return CourseCard(
+              course: course,
+              onEdit: () {
+                Get.to(() => EditCoursePage(courseId: course['id']));
+              },
+              onDelete: () {
+                controller.deleteCourse(course['id']);
+              },
+            );
+          },
+        );
+      }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.to(() => AddCoursePage());
+        },
+        child: Icon(Icons.add),
       ),
     );
   }

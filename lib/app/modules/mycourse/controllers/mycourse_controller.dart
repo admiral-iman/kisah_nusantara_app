@@ -1,30 +1,55 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 class MyCourseController extends GetxController {
-  // Observable list of courses
-  var courses = <Map<String, dynamic>>[
-    {'id': 1, 'name': 'Sejarah Nusantara', 'selected': false},
-    {'id': 2, 'name': 'Bahasa Daerah', 'selected': false},
-    {'id': 3, 'name': 'Budaya Lokal', 'selected': false},
-    {'id': 4, 'name': 'Kerajaan Hindu-Buddha', 'selected': false},
-    {'id': 5, 'name': 'Kerajaan Islam', 'selected': false},
-  ].obs;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Observable variable to track selected courses count
-  var selectedCount = 0.obs;
+  // Observable list untuk menyimpan data kursus dari Firestore
+  var courses = <Map<String, dynamic>>[].obs;
 
-  // Function to toggle selection of a course
-  void toggleCourse(int id) {
-    final index = courses.indexWhere((course) => course['id'] == id);
-    if (index != -1) {
-      courses[index]['selected'] = !courses[index]['selected'];
-      updateSelectedCount();
+  // List untuk menyimpan ID kursus yang dipilih
+  var selectedCourses = <String>[].obs;
+
+  // Mengambil data kursus dari Firestore
+  @override
+  void onInit() {
+    super.onInit();
+    fetchCourses();
+  }
+
+  void fetchCourses() {
+    _firestore.collection('courses').snapshots().listen((snapshot) {
+      courses.value = snapshot.docs.map((doc) {
+        return {
+          'id': doc.id,
+          'name': doc['name'],
+          'description': doc['description'],
+          'selected': selectedCourses.contains(doc.id),
+        };
+      }).toList();
+    });
+  }
+
+  // Menambahkan atau menghapus kursus dari keranjang
+  void toggleCourse(String id) {
+    if (selectedCourses.contains(id)) {
+      selectedCourses.remove(id);
+    } else {
+      selectedCourses.add(id);
     }
+    updateCourseSelection();
   }
 
-  // Update the count of selected courses
-  void updateSelectedCount() {
-    selectedCount.value =
-        courses.where((course) => course['selected'] == true).length;
+  // Update status selected pada setiap kursus
+  void updateCourseSelection() {
+    courses.value = courses.map((course) {
+      return {
+        ...course,
+        'selected': selectedCourses.contains(course['id']),
+      };
+    }).toList();
   }
+
+  // Mendapatkan total kursus yang dipilih
+  int get selectedCount => selectedCourses.length;
 }
