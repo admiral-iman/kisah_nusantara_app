@@ -4,6 +4,7 @@ import 'package:kisah_nusantara_app/app/modules/course/budaya/views/budaya_page.
 import 'package:kisah_nusantara_app/app/modules/course/budaya/views/webview_budaya.dart';
 import 'package:kisah_nusantara_app/app/modules/home/views/home_view.dart';
 import 'package:kisah_nusantara_app/app/modules/home/views/splashscreen.dart';
+import 'package:kisah_nusantara_app/app/modules/mycourse/views/mycourse.dart';
 import 'package:kisah_nusantara_app/app/modules/profile/views/login.dart';
 import 'package:kisah_nusantara_app/app/modules/profile/views/register.dart';
 
@@ -31,6 +32,10 @@ class AppPages {
     GetPage(
       name: AppRoutes.budaya,
       page: () => BudayaDetailPage(),
+    ),
+    GetPage(
+      name: AppRoutes.course,
+      page: () => MyCoursePage(),
     ),
   ];
 }

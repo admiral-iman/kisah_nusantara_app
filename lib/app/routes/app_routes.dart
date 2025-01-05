@@ -7,4 +7,5 @@ class AppRoutes {
   static const String home = '/home';
   static const String budaya = '/budaya';
   static const String budayayt = '/youtubeplayer';
+  static const String course = '/mycourse';
 }
