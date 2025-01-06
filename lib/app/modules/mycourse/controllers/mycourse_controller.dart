@@ -31,10 +31,7 @@ class MyCourseController extends GetxController {
   }
 
   void editCourse(String courseId) {
-    // Menghapus kelas lama dari keranjang
     toggleCourse(courseId);
-
-    // Mengarahkan pengguna kembali ke halaman pemilihan kelas
     Get.toNamed('/mycourse');
   }
 

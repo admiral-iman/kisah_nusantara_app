@@ -10,10 +10,12 @@ class MyCoursePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pilih Kelas Anda'),
+        backgroundColor: const Color(0xFFDFD0B8),
+        title: const Text('Pilih Kelas Anda',
+            style: TextStyle(color: Colors.black)),
         actions: [
           IconButton(
-            icon: const Icon(Icons.shopping_cart),
+            icon: const Icon(Icons.shopping_cart, color: Colors.black),
             onPressed: () {
               Get.to(() => CartPage());
             },
@@ -32,6 +34,7 @@ class MyCoursePage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final course = controller.courses[index];
                   return Card(
+                    color: const Color(0xFFDFD0B8).withOpacity(0.3),
                     child: ListTile(
                       title: Text(course['name']),
                       subtitle: Text(course['description']),
@@ -55,8 +58,11 @@ class MyCoursePage extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: Text(
                 'Total kelas dipilih: ${controller.selectedCount}',
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
             );
           }),
@@ -73,7 +79,9 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Keranjang Kelas'),
+        backgroundColor: const Color(0xFFDFD0B8),
+        title: const Text('Keranjang Kelas',
+            style: TextStyle(color: Colors.black)),
       ),
       body: Obx(() {
         if (controller.selectedCourses.isEmpty) {
@@ -86,6 +94,7 @@ class CartPage extends StatelessWidget {
             final course = controller.courses
                 .firstWhere((c) => c['id'] == courseId, orElse: () => {});
             return Card(
+              color: const Color(0xFFDFD0B8).withOpacity(0.3),
               child: ListTile(
                 title: Text(course['name'] ?? 'Nama tidak tersedia'),
                 subtitle:
@@ -94,13 +103,13 @@ class CartPage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.edit),
+                      icon: const Icon(Icons.edit, color: Colors.black),
                       onPressed: () {
                         controller.editCourse(courseId);
                       },
                     ),
                     IconButton(
-                      icon: const Icon(Icons.remove_circle),
+                      icon: const Icon(Icons.remove_circle, color: Colors.red),
                       onPressed: () {
                         controller.toggleCourse(courseId);
                       },
@@ -115,6 +124,10 @@ class CartPage extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFFDFD0B8),
+            foregroundColor: Colors.black,
+          ),
           onPressed: () {
             Get.to(() => PaymentView());
           },
@@ -130,7 +143,8 @@ class PaymentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pembayaran'),
+        backgroundColor: const Color(0xFFDFD0B8),
+        title: const Text('Pembayaran', style: TextStyle(color: Colors.black)),
       ),
       body: const Center(
         child: Text('Fitur pembayaran akan dikembangkan lebih lanjut.'),
