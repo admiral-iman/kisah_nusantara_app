@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kisah_nusantara_app/app/modules/mycourse/controllers/mycourse_controller.dart';
+import 'package:kisah_nusantara_app/app/modules/mycourse/views/payment.dart';
 
 class MyCoursePage extends StatelessWidget {
   final MyCourseController controller = Get.put(MyCourseController());
@@ -115,7 +116,7 @@ class CartPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
           onPressed: () {
-            Get.toNamed('/payment');
+            Get.to(() => PaymentView());
           },
           child: const Text('Checkout'),
         ),
