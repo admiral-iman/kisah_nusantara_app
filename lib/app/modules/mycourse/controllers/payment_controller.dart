@@ -1,21 +1,18 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-
+import 'package:kisah_nusantara_app/app/modules/mycourse/views/feedback.dart';
 
 class PaymentController extends GetxController {
   // Observable untuk metode pembayaran
   RxString selectedPaymentMethod = ''.obs;
 
-
   // Observable untuk total pembayaran
   RxString totalPayment = '120.000'.obs;
-
 
   // Metode untuk mengatur metode pembayaran
   void setPaymentMethod(String method) {
     selectedPaymentMethod.value = method;
   }
-
 
   // Metode untuk memproses pembayaran
   void processPayment() {
@@ -30,7 +27,6 @@ class PaymentController extends GetxController {
       return;
     }
 
-
     // Proses pembayaran
     try {
       // Simulasi proses pembayaran
@@ -41,8 +37,7 @@ class PaymentController extends GetxController {
           actions: [
             TextButton(
               onPressed: () {
-                Get.back(); // Tutup dialog
-                Get.back(); // Kembali ke halaman sebelumnya
+                Get.to(() => FeedbackPage());
               },
               child: Text('OK'),
             )

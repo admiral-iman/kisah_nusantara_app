@@ -42,7 +42,7 @@ class PaymentView extends StatelessWidget {
 
   Widget _buildOrderDetails() {
     return Card(
-      color: const Color(0xFF3C5B6F).withOpacity(0.4),
+      color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.4),
       elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
@@ -57,7 +57,7 @@ class PaymentView extends StatelessWidget {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.black87,
+                color: Color(0xFF153448),
               ),
             ),
             const SizedBox(height: 10),
@@ -74,7 +74,10 @@ class PaymentView extends StatelessWidget {
                         Expanded(
                           child: Text(
                             course['name'] ?? 'Nama tidak tersedia',
-                            style: const TextStyle(fontSize: 16),
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Color(0xFF153448),
+                            ),
                           ),
                         ),
                         Text(
@@ -106,7 +109,7 @@ class PaymentView extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Colors.black87,
+            color: Color(0xFF153448),
           ),
         ),
         const SizedBox(height: 10),
@@ -123,13 +126,16 @@ class PaymentView extends StatelessWidget {
 
   Widget _buildPaymentMethodRadio(String method) {
     return Card(
-      color: const Color(0xFF3C5B6F).withOpacity(0.3),
+      color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.3),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
       child: RadioListTile(
-        activeColor: const Color(0xFFDFD0B8),
-        title: Text(method),
+        activeColor: const Color(0xFF948979),
+        title: Text(
+          method,
+          style: const TextStyle(color: Color(0xFF153448)),
+        ),
         value: method,
         groupValue: controller.selectedPaymentMethod.value,
         onChanged: (value) {
@@ -156,7 +162,7 @@ class PaymentView extends StatelessWidget {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.black87,
+                color: Color(0xFF153448),
               ),
             ),
             Obx(() {

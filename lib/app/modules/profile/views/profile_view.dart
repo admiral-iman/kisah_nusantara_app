@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kisah_nusantara_app/app/modules/mycourse/views/mycourse.dart';
+import 'package:kisah_nusantara_app/app/modules/profile/views/feedback_card.dart';
 import 'package:kisah_nusantara_app/app/modules/profile/views/my_account.dart';
 import 'package:kisah_nusantara_app/app/modules/profile/views/voucher_view.dart';
 import '../../home/views/bottom_navbar.dart';
@@ -98,16 +100,20 @@ class ProfilePage extends StatelessWidget {
               _buildMenuItem(
                 icon: Icons.class_outlined,
                 title: "Kursus Saya",
-                onTap: () {},
+                onTap: () {
+                  Get.to(() => MyCoursePage());
+                },
               ),
               _buildMenuItem(
-                icon: Icons.notifications_outlined,
-                title: "Notifikasi",
-                onTap: () {},
+                icon: Icons.rate_review,
+                title: "Ulasan",
+                onTap: () {
+                  Get.to(() => FeedbackCard());
+                },
               ),
               _buildMenuItem(
                 icon: Icons.payment,
-                title: "Pembayaran",
+                title: "Voucher",
                 onTap: () {
                   Get.to(() => VoucherView());
                 },
@@ -118,7 +124,7 @@ class ProfilePage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
+                    backgroundColor: const Color(0xFF153448),
                     minimumSize: const Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(25),

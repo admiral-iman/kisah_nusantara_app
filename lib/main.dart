@@ -10,14 +10,11 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  // Memeriksa apakah pengguna sudah login
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
 
-  // Menentukan halaman awal berdasarkan status login
   String initialRoute = isLoggedIn ? AppRoutes.home : AppRoutes.splash;
 
-  // Inisialisasi AuthController di sini
   Get.put(AuthController());
 
   runApp(MyApp(initialRoute));
